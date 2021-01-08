@@ -9,6 +9,7 @@ const csp = require('helmet-csp')
 const { nanoid } = require('nanoid');
 const { nextTick } = require('process');
 const fs = require('fs');
+const { goodArray } = require('./names.js');
 
 const app = express();
 
@@ -51,9 +52,11 @@ app.use(express.static('./public'));
 
 
 function buildJson() {
-    for (var i = 0; i < 5000; i++) {
-        patients.insert({ id: i, cough: getRandomVal(), fever: getRandomVal(), sore_throat: getRandomVal(), shortness_of_breath: getRandomVal(), lack_of_smell: getRandomVal(), lack_of_tase: getRandomVal(), runny_nose: getRandomVal(), nausea: getRandomVal(), diziness: getRandomVal() });
+    for (var i = 0; i < 3000; i++) {
+        console.log(i)
+        patients.insert({ id: i, name: goodArray[i], cough: getRandomVal(), fever: getRandomVal(), sore_throat: getRandomVal(), shortness_of_breath: getRandomVal(), lack_of_smell: getRandomVal(), lack_of_tase: getRandomVal(), runny_nose: getRandomVal(), nausea: getRandomVal(), diziness: getRandomVal() });
     }
+    return true;
 }
 
 function getRandomVal() {
@@ -67,7 +70,42 @@ app.get('/v1/patients/records', async function (req, res, next) {
             data: added
         });
     }
-    catch {
+    catch (error) {
+        next(error);
+    };
+});
+
+app.post('/v1/patients/records/create', async function (req, res, next) {
+    try {
+        const added = buildJson();
+        if (added) {
+            res.json({
+                data: added
+            });
+        }
+    }
+    catch (error) {
+        next(error)
+    };
+});
+
+app.patch('/v1/patients/records/update/:id', async function (req, res, next) {
+    try {
+        console.log(req.body)
+    }
+    catch (error) {
+        next(error)
+    };
+});
+
+app.delete('/v1/patients/records/delete', async function (req, res, next) {
+    try {
+        const added = await patients.drop();
+        res.json({
+            data: added
+        });
+    }
+    catch (error) {
         next(error)
     };
 });
@@ -80,7 +118,7 @@ app.get('/v1/patients/records/:id', async function (req, res, next) {
             data: [record]
         });
     }
-    catch {
+    catch (error) {
         next(error);
     }
 });
@@ -101,3 +139,5 @@ const port = process.env.PORT || 9000;
 app.listen(port, () => {
     console.log('Running on port ' + port);
 });
+
+

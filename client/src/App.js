@@ -5,21 +5,30 @@ import enums from './enum.js';
 function App() {
   const [patientId, setPatientId] = useState('');
   const [patientData, setPatientData] = useState([]);
-  const [patientTreatment, setPatientTreatment] = useState('');
+  const [patientTreatment, setPatientTreatment] = useState({ display: false });
+  const [showLoader, setShowLoader] = useState(false);
 
   const handleSubmit = async (event, id) => {
     event.preventDefault();
+    setShowLoader(true);
     setPatientData([]);
     var response = await fetch(`/v1/patients/records/${id}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
     response = await response.json();
-    setPatientData(await response.data);
+    if (response.data && response.data.length > 0 && response.data[0]) {
+      setPatientData(response.data.sort((a, b) => a.id - b.id));
+    }
+    setShowLoader(false);
+  }
+
+  const generateTreatment = (entry) => {
+    setPatientTreatment({ display: true });
   }
 
   return (
-    <div className="App">
+    <div className="App"  >
       <header className="App-header">
         <h2>Medical database</h2>
       </header>
@@ -28,46 +37,70 @@ function App() {
           <InputId id={patientId} onChange={event => setPatientId(event.target.value)} onSubmit={handleSubmit} />
         </div>
         <div>
-          <PatientResult data={patientData} />
+          <PatientResult data={patientData} loader={showLoader} toggleLoader={() => setShowLoader(false)} openFile={generateTreatment} />
         </div>
         <div>
-          <PatientTreatment data={patientTreatment} />
+          <PatientTreatment show={patientTreatment} onClick={() => setPatientTreatment({ display: false })} />
         </div>
       </main>
-    </div>
+    </ div>
   );
 }
 
 function InputId(props) {
   const validateInput = event => {
     var reg = /\d+/;
-    if (!reg.test(event.key) && event.keyCode !== 8) event.preventDefault();
+    if (!reg.test(event.key) && event.keyCode !== 8 && event.keyCode !== 13) event.preventDefault();
   }
   return (
     <form onSubmit={event => props.onSubmit(event, props.id)}>
       <input type="text" value={props.id} onChange={props.onChange} onKeyDown={validateInput} placeholder="Insert ID..." />
-      <button type="submit" className="search">Search</button>
+      <button type="submit" className="search">{props.id ? 'Search by ID' : 'Search all records'}</button>
     </form>
   );
 }
 
 function PatientTreatment(props) {
+  console.log(props.show)
   return (
     <>
-      {props.data ? <p className="treatment">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer
-      took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-      but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-      with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-      software like Aldus PageMaker including versions of Lorem Ipsum.
-    </p> : null}
-
+      {props.show.display ?
+        <div id="modal" className={props.show.display === true ? "modal active" : "modal inactive"}>
+          <div className="modal-content">
+            <span className="close" onClick={props.onClick}>&times;</span>
+            <p>Some text in the Modal..</p>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+          </div>
+        </div>
+        : null}
     </>
   )
 }
 
 function PatientResult(props) {
-  console.log(props.data)
+  const getSymptomsSum = (entry) => {
+    return Object.values(entry).splice(3).reduce((a, b) => a + b);
+  }
+  const getEntryTimeStamp = (entry) => {
+    const symptomsSum = getSymptomsSum(entry);
+    switch (true) {
+      case symptomsSum <= 3:
+        return "72 ore"
+      case symptomsSum <= 5:
+        return "48 ore"
+      default: return "24 ore"
+    }
+  }
+  const generateDocument = (entry) => {
+    props.openFile(entry);
+  }
   return (
     <>
       { props.data && props.data.length > 0 ?
@@ -75,7 +108,7 @@ function PatientResult(props) {
           <table className="data-table" id="patient-records">
             <thead>
               <tr>
-                {enums.simptoms.map((simptom, index) => {
+                {enums.symptoms.map((simptom, index) => {
                   return <th key={index}>{simptom}</th>
                 })}
               </tr>
@@ -83,8 +116,10 @@ function PatientResult(props) {
             <tbody className="data-table-body">
               {props.data.map((entry, index) => {
                 return (
-                  <tr key={index}>
+                  <tr key={entry.id} title={"Open " + entry.id} onClick={(event) => generateDocument(entry)}>
                     <td>{entry.id}</td>
+                    <td>{entry.name}</td>
+                    <td>{getEntryTimeStamp(entry)}</td>
                     <td className={entry.cough === 1 ? "positive" : "negative"}>{entry.cough === 1 ? "Da" : "Nu"}</td>
                     <td className={entry.diziness === 1 ? "positive" : "negative"}>{entry.diziness === 1 ? "Da" : "Nu"}</td>
                     <td className={entry.fever === 1 ? "positive" : "negative"}>{entry.fever === 1 ? "Da" : "Nu"}</td>
@@ -100,9 +135,16 @@ function PatientResult(props) {
             </tbody>
           </table>
         </div>
-        : null
+        : <Loader loader={props.loader} />
       }
     </>
+  );
+}
+
+function Loader(props) {
+  console.log(props.loader)
+  return (
+    props.loader ? <div className="loader"></div> : null
   );
 }
 

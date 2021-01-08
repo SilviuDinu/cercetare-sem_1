@@ -1,4 +1,6 @@
-const simptoms = ['ID pacient',
+const symptoms = ['ID pacient',
+    'Nume',
+    'Actualizat',
     'Tuse',
     'Lipsă miros',
     'Lipsă gust',
@@ -10,6 +12,22 @@ const simptoms = ['ID pacient',
     'Greață'
 ];
 
+// const diseases = [{
+//     cold: {
+//         symptoms: {
+//             Tuse,
+//             'Lipsă miros',
+//             'Lipsă gust',
+//             'Febră',
+//             'Amețeală',
+//             'Dureri de gât',
+//             'Dificultăți respiratorii',
+//             'Exces de mucozități',
+//             'Greață'
+//         }
+//     }
+// }]
+
 export default {
-    simptoms
+    symptoms
 }
