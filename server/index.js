@@ -52,9 +52,11 @@ app.use(express.static('./public'));
 
 
 function buildJson() {
-    for (var i = 0; i < 3000; i++) {
+    for (var i = 0; i < 2000; i++) {
         console.log(i)
-        patients.insert({ id: i, name: goodArray[i], cough: getRandomVal(), fever: getRandomVal(), sore_throat: getRandomVal(), shortness_of_breath: getRandomVal(), lack_of_smell: getRandomVal(), lack_of_tase: getRandomVal(), runny_nose: getRandomVal(), nausea: getRandomVal(), diziness: getRandomVal() });
+        patients.insert({
+            id: i, name: goodArray[i], age: Math.floor((Math.random() * (70 - 18)) + 18), cough: getRandomVal(), fever: getRandomVal(), sore_throat: getRandomVal(), shortness_of_breath: getRandomVal(), lack_of_smell: getRandomVal(), lack_of_tase: getRandomVal(), runny_nose: getRandomVal(), nausea: getRandomVal(), diziness: getRandomVal()
+        });
     }
     return true;
 }
@@ -62,6 +64,7 @@ function buildJson() {
 function getRandomVal() {
     return Math.random() >= 0.5 ? 1 : 0;
 }
+
 
 app.get('/v1/patients/records', async function (req, res, next) {
     try {
@@ -100,9 +103,24 @@ app.patch('/v1/patients/records/update/:id', async function (req, res, next) {
 
 app.delete('/v1/patients/records/delete', async function (req, res, next) {
     try {
+
         const added = await patients.drop();
         res.json({
             data: added
+        });
+    }
+    catch (error) {
+        next(error)
+    };
+});
+
+app.delete('/v1/patients/records/delete/:id', async function (req, res, next) {
+    const { id: id } = req.params;
+    try {
+        console.log(id)
+        const deleted = await patients.remove({ id: parseInt(id) });
+        res.json({
+            data: deleted.deletedCount
         });
     }
     catch (error) {

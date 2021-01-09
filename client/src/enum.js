@@ -13,6 +13,7 @@ const symptoms = [
 const tableHead = [
     'ID pacient',
     'Nume',
+    'Vârsta',
     'Actualizat'
 ]
 

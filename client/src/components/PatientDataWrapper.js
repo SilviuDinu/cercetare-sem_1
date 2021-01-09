@@ -1,6 +1,6 @@
 import React from 'react';
 import PatientResult from './PatientResult';
-import PatientTreatment from './PatientTreatment';
+import PatientTreatmentModal from './PatientTreatmentModal';
 
 
 export default class PatientDataWrapper extends React.Component {
@@ -31,7 +31,7 @@ export default class PatientDataWrapper extends React.Component {
         )
     }
     getSymptomsSum = (entry) => {
-        return Object.values(entry).splice(3).reduce((a, b) => a + b);
+        return Object.values(entry).splice(4).reduce((a, b) => a + b);
     }
     getEntryTimeStamp = (entry) => {
         const symptomsSum = this.getSymptomsSum(entry);
@@ -42,6 +42,24 @@ export default class PatientDataWrapper extends React.Component {
                 return "48 ore"
             default: return "24 ore"
         }
+    }
+    deleteFromDB = (entry) => {
+        this.setState(
+            {
+                patientFile: {
+                    display: false,
+                    data: null,
+                    modalTitle: null,
+                    timeStamp: null,
+                    modalBodyHeaderMessage: null
+                }
+            }
+        )
+        this.props.deleteFromDB(entry);
+        this.props.setPatientData();
+    }
+    generateDiagnosis = (entry) => {
+        console.log("Not supported yet")
     }
 
     render() {
@@ -56,8 +74,10 @@ export default class PatientDataWrapper extends React.Component {
                         getEntryTimeStamp={this.getEntryTimeStamp} />
                 </div>
                 <div>
-                    <PatientTreatment show={this.state.patientFile}
-                        onClick={() => this.setState({ patientFile: { display: false, data: null } })} />
+                    <PatientTreatmentModal show={this.state.patientFile}
+                        onClick={() => this.setState({ patientFile: { display: false, data: null } })}
+                        deleteFromDB={this.deleteFromDB}
+                        generateDiagnosis={this.generateDiagnosis} />
                 </div>
             </>
         )

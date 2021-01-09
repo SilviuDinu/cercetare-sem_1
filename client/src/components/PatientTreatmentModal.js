@@ -2,7 +2,7 @@
 import SymptomsTitles from "./SymptomsTitles";
 import IndividualPatientData from "./IndividualPatientData";
 
-export default function PatientTreatment(props) {
+export default function PatientTreatmentModal(props) {
     return (
         <>
             {props.show.display ?
@@ -16,7 +16,11 @@ export default function PatientTreatment(props) {
                                 <div className="symptoms-title">
                                     <SymptomsTitles tag="p" display="flex" />
                                 </div>
-                                <IndividualPatientData wrapper="div" children="p" data={props.show.data} getEntryTimeStamp={props.show.timeStamp} display="symptoms-value" showPatientIdentification={false} />
+                                <IndividualPatientData wrapper="div" children="input" data={props.show.data} getEntryTimeStamp={props.show.timeStamp} display="symptoms-value" showPatientIdentification={false} />
+                            </div>
+                            <div className="actions">
+                                <button onClick={event => props.generateDiagnosis(props.show.data)}>Generează diagnostic</button>
+                                <button className="delete" onClick={(event) => props.deleteFromDB(props.show.data.id)}>Șterge din baza de date</button>
                             </div>
                         </div>
                     </div>

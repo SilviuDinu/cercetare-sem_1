@@ -20,7 +20,9 @@ export default function PatientResult(props) {
                         <tbody className="data-table-body">
                             {props.data.map((entry, index) => {
                                 return (
-                                    <IndividualPatientData wrapper="tr" children="td" data={entry} key={entry.id} openFile={props.openFile}
+                                    <IndividualPatientData wrapper="tr" children="td"
+                                        data={entry} key={entry.id}
+                                        openFile={props.openFile}
                                         getEntryTimeStamp={props.getEntryTimeStamp(entry)}
                                         showPatientIdentification={true} />
                                 );
