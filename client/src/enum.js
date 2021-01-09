@@ -1,6 +1,4 @@
-const symptoms = ['ID pacient',
-    'Nume',
-    'Actualizat',
+const symptoms = [
     'Tuse',
     'Lipsă miros',
     'Lipsă gust',
@@ -11,6 +9,12 @@ const symptoms = ['ID pacient',
     'Exces de mucozități',
     'Greață'
 ];
+
+const tableHead = [
+    'ID pacient',
+    'Nume',
+    'Actualizat'
+]
 
 // const diseases = [{
 //     cold: {
@@ -28,6 +32,9 @@ const symptoms = ['ID pacient',
 //     }
 // }]
 
-export default {
-    symptoms
-}
+const enums = {
+    symptoms,
+    tableHead
+};
+
+export default enums;
