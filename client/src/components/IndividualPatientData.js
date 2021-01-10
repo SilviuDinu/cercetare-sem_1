@@ -7,7 +7,7 @@ export default function IndividualPatientData(props) {
 
             {props.showPatientIdentification ? <ShowPatientIdentification elements={props.children} data={{ id: props.data.id, name: props.data.name, getEntryTimeStamp: props.getEntryTimeStamp, age: props.data.age }} /> : null}
 
-            <PatientSymptomsData data={props.data} tag={props.children} onClick={props.openFile ? (event) => props.openFile(props.data) : null} />
+            <PatientSymptomsData data={props.data} tag={props.children} diagnosis={props.diagnosis} onClick={props.openFile ? (event) => props.openFile(props.data) : null} />
 
         </props.wrapper>
     )

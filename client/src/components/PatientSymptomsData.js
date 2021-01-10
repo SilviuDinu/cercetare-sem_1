@@ -1,3 +1,4 @@
+
 export default function PatientSymptomsData(props) {
     const renderElement = (obj) => {
         const uselessProps = ["_id", "id", "name", "age"]
