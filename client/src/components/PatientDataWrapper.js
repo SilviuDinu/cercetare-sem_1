@@ -23,7 +23,7 @@ export default class PatientDataWrapper extends React.Component {
                 {
                     display: true,
                     data: entry,
-                    modalTitle: <span>Fișa pacientului <b>{entry.name}</b> (ID: {entry.id})</span>,
+                    modalTitle: <span>Fișa pacientului <b>{entry.name}</b>, {entry.age} ani (ID: {entry.id})</span>,
                     timeStamp: this.getEntryTimeStamp(entry),
                     modalBodyHeaderMessage: 'Simptome actuale (actualizat: ' + this.getEntryTimeStamp(entry) + ')'
                 }
@@ -36,9 +36,9 @@ export default class PatientDataWrapper extends React.Component {
     getEntryTimeStamp = (entry) => {
         const symptomsSum = this.getSymptomsSum(entry);
         switch (true) {
-            case symptomsSum <= 3:
+            case symptomsSum <= 6:
                 return "72 ore"
-            case symptomsSum <= 5:
+            case symptomsSum <= 9:
                 return "48 ore"
             default: return "24 ore"
         }
