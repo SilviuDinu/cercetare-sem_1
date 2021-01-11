@@ -55,7 +55,26 @@ function buildJson() {
     for (var i = 0; i < 2000; i++) {
         console.log(i)
         patients.insert({
-            id: i, name: goodArray[i], age: Math.floor((Math.random() * (70 - 18)) + 18), cough: getRandomVal(), fever: getRandomVal(), sore_throat: getRandomVal(), shortness_of_breath: getRandomVal(), lack_of_smell: getRandomVal(), lack_of_tase: getRandomVal(), runny_nose: getRandomVal(), nausea: getRandomVal(), diziness: getRandomVal()
+            id: i,
+            name: goodArray[i],
+            age: Math.floor((Math.random() * (70 - 18)) + 18),
+            cough: getRandomVal(), fever: getRandomVal(),
+            sore_throat: getRandomVal(),
+            shortness_of_breath: getRandomVal(),
+            lack_of_smell: getRandomVal(),
+            lack_of_taste: getRandomVal(),
+            runny_nose: getRandomVal(),
+            nausea: getRandomVal(),
+            diziness: getRandomVal(),
+            muscle_ache: getRandomVal(),
+            headache: getRandomVal(),
+            fatigue: getRandomVal(),
+            vomiting: getRandomVal(),
+            diarrhea: getRandomVal(),
+            stomach_ache: getRandomVal(),
+            skin_rash: getRandomVal(),
+            sneezing: getRandomVal(),
+            swelling: getRandomVal()
         });
     }
     return true;
@@ -117,7 +136,6 @@ app.delete('/v1/patients/records/delete', async function (req, res, next) {
 app.delete('/v1/patients/records/delete/:id', async function (req, res, next) {
     const { id: id } = req.params;
     try {
-        console.log(id)
         const deleted = await patients.remove({ id: parseInt(id) });
         res.json({
             data: deleted.deletedCount

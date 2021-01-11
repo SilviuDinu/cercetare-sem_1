@@ -148,14 +148,19 @@ const diseases = [
             }
         }
     }
-
 ]
 
+const boli = ["Răceală", "Toxiinfecție alimentară", "Covid 19", "Gripă", "Alergie"]
+
+const mappedSymptoms = Object.assign(...Object.keys(diseases[0].cold.symptoms).map((k, i) => ({ [k]: symptoms[i] })));
+const mappedDiseases = Object.assign(...diseases.map((k, i) => ({ [k]: boli[i] })));
 
 const enums = {
     symptoms,
     tableHead,
-    diseases
+    diseases,
+    mappedSymptoms,
+    mappedDiseases
 };
 
 export default enums;

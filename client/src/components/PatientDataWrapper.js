@@ -61,6 +61,11 @@ export default class PatientDataWrapper extends React.Component {
         this.props.deleteFromDB(entry);
         this.props.setPatientData();
     }
+    closeModal = () => {
+        let state = Object.assign({}, this.state);
+        state.patientFile.display = false;
+        this.setState(state);
+    }
     getPatientSymptoms = (entry) => {
         const arr = [];
         for (var symptom in entry) {
@@ -99,7 +104,6 @@ export default class PatientDataWrapper extends React.Component {
                 disease_symptoms: current.symptoms
             }
         })
-        console.log(scoreArray)
         let state = Object.assign({}, this.state);
         state.patientFile.diagnosis = scoreArray;
         this.setState(state)
@@ -119,7 +123,7 @@ export default class PatientDataWrapper extends React.Component {
                 </div>
                 <div>
                     <PatientTreatmentModal show={this.state.patientFile}
-                        onClick={() => this.setState({ patientFile: { display: false, data: null } })}
+                        onClick={() => this.closeModal()}
                         deleteFromDB={this.deleteFromDB}
                         generateDiagnosis={this.generateDiagnosis} />
                 </div>

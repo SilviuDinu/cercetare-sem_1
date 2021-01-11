@@ -4,7 +4,6 @@ import IndividualPatientData from "./IndividualPatientData";
 import Diagnosis from './Diagnosis';
 
 export default function PatientTreatmentModal(props) {
-    console.log(props)
     return (
         <>
             {props.show.display ?
@@ -30,6 +29,7 @@ export default function PatientTreatmentModal(props) {
                                 <Diagnosis data={props.show.diagnosis} />
                             </div>
                             : null}
+
                     </div>
                 </div>
 

@@ -12,6 +12,39 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.results-title {
+  font-size: 20px;
+  margin-bottom: 35px;
+  text-align: left;
+}
+
+.results {
+  padding: 8px;
+}
+
+.safe {
+  background-color: lightgrey;
+}
+
+.detected {
+  background-color: rgb(200, 118, 118);
+}
+.disease-title {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+.square {
+  border: 1px transparent;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.diagnostic {
+  text-align: center;
+  margin-bottom: 40px;
+}
 
 .error {
   color: #ff0000;
@@ -46,6 +79,22 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.legend {
+  display: inline-block;
+  margin-left: 15px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+/* table.results-table-wrap {
+  table-layout: fixed;
+} */
+
+.results-table {
+  display: flex;
+  justify-content: center;
 }
 
 body .App-header {
