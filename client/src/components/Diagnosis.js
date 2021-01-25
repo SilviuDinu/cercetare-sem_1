@@ -1,27 +1,16 @@
 import IndividualDiseaseResult from './IndividualDiseaseResult.js';
+import { useState } from 'react';
+import enums from '../enum.js';
 
 export default function Diagnosis(props) {
-
+    const [dominantDisease, setDominantDisease] = useState({ perc: 0, name: "" });
     const mapResults = (elem, index) => {
-        switch (elem.disease) {
-            case "cold":
-                return <IndividualDiseaseResult key={index} diseaseTitle="Răceală" percent={elem.percent} elem={elem} />
-
-            case "food_poisoning":
-                return <IndividualDiseaseResult key={index} diseaseTitle="Toxiinfecție alimentară" percent={elem.percent} elem={elem} />
-
-            case "covid_19":
-                return <IndividualDiseaseResult key={index} diseaseTitle="Covid 19" percent={elem.percent} elem={elem} />
-
-            case "flu":
-                return <IndividualDiseaseResult key={index} diseaseTitle="Gripă" percent={elem.percent} elem={elem} />
-
-            case "allergy":
-                return <IndividualDiseaseResult key={index} diseaseTitle="Alergie" percent={elem.percent} elem={elem} />
-
-            default: return <p>Necunoscut</p>
+        if (parseFloat(elem.percent) > dominantDisease.perc) {
+            setDominantDisease({ perc: parseFloat(elem.percent), name: enums.mappedDiseases[elem.disease] })
         }
+        return <IndividualDiseaseResult key={index} diseaseTitle={enums.mappedDiseases[elem.disease]} dominant={dominantDisease} percent={elem.percent} elem={elem} />
     }
+
     return (
         <>
             <div className="results-wrapper">

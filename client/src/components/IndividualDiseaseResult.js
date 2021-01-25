@@ -4,7 +4,6 @@ import enums from '../enum.js';
 export default function IndividualDiseaseResult(props) {
 
     const mapSymptoms = (elem) => {
-        console.log(elem)
         const aux = elem.disease_symptoms.map((symptom, index) => {
             return <td className={elem.matched_symptoms.includes(symptom) ? "detected analysis" : "safe analysis"} key={index}>{enums.mappedSymptoms[symptom]} </td>
         })
@@ -22,6 +21,9 @@ export default function IndividualDiseaseResult(props) {
                         </tbody>
                     </table>
                 </div><Legend /></div>
+            {/* <div className="concluzii">
+                În urma rezultateor, diagnosticul cu cele mai mari șanse este {props.dominant.name}, cu o șansă de {props.dominant.perc}
+            </div> */}
         </>
     )
 }
