@@ -12,11 +12,51 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.results-title {
+  font-size: 20px;
+  margin-bottom: 35px;
+  text-align: left;
+}
+.submit {
+  width: 200px;
+}
+.results {
+  padding: 8px;
+}
+
+.safe {
+  background-color: lightgrey;
+}
+
+.detected {
+  background-color: rgb(200, 118, 118);
+}
+.disease-title {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+.square {
+  border: 1px transparent;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.diagnostic {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.error {
+  color: #ff0000;
+  font-size: 20px;
+}
 
 .loader {
-  border: 16px solid #f3f3f3;
+  border: 8px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 16px solid #3498db;
+  border-top: 8px solid #3498db;
   width: 70px;
   height: 70px;
   margin-top: 30px;
@@ -43,6 +83,26 @@
   }
 }
 
+.positive {
+  font-weight: 700;
+}
+
+.legend {
+  display: inline-block;
+  margin-left: 15px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+/* table.results-table-wrap {
+  table-layout: fixed;
+} */
+
+.results-table {
+  display: flex;
+  justify-content: center;
+}
+
 body .App-header {
   display: flex;
   flex-direction: column;
@@ -62,10 +122,6 @@ td {
   text-align: center;
   padding: 12px;
   border: 1px solid #d6c9c9;
-}
-
-tr {
-  cursor: pointer;
 }
 
 tr:nth-child(even) {
@@ -88,6 +144,21 @@ tr:hover {
 .treatment {
   text-align: justify;
   margin-top: 50px;
+}
+
+.chart-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.chart {
+  margin: 10px;
+  padding: 20px;
+  width: 40%;
+  flex: 0;
 }
 
 .App-main {
@@ -117,27 +188,47 @@ tr td {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button.search {
+  font-size: 18px;
+  width: 200px;
+  margin-left: 15px;
 }
 
-button.search {
+button {
   height: 30px;
   background-color: #007bff;
   box-shadow: 3px 3px 0 0 #ccc;
   color: #fff;
   font-size: 18px;
-  width: 200px;
   outline: none;
-  margin-left: 15px;
+  cursor: pointer;
 }
 
-input {
+button:hover {
+  background-color: #669bd4;
+}
+
+.actions {
+  margin: 50px auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete {
+  background-color: #ff0000;
+}
+
+@media (max-width: 767px) {
+  button.search {
+    margin: 0 auto;
+    width: 55%;
+  }
+  input.search-records {
+    width: 50%;
+  }
+}
+
+input.search-records {
   margin: 0 auto;
   width: 200px;
   height: 30px;
@@ -154,7 +245,13 @@ input {
 .active {
   display: block;
 }
-
+.open-file {
+  color: #0b5cb4;
+  cursor: pointer;
+}
+.open-file:hover {
+  text-decoration: underline;
+}
 .symptoms-wrapper {
   width: 80%;
   margin: 50px auto 50px;
@@ -177,7 +274,8 @@ input {
   flex: 16;
 }
 .symptoms-title p:first-child,
-.symptoms-value p:first-child {
+.symptoms-value p:first-child,
+.symptoms-value input:first-child {
   border-top: 1px solid #ccc;
 }
 .symptoms-title p {
@@ -187,6 +285,11 @@ input {
   margin-bottom: 0;
   padding: 8px;
 }
+
+.symptoms-title p.positive {
+  border: 2px solid #ff0000;
+}
+
 .symptoms-value {
   flex: 4;
   text-align: center;
@@ -198,8 +301,19 @@ input {
   margin-top: 0;
   margin-bottom: 0;
   padding: 8px;
+  /* height: 20px; */
 }
-
+.symptoms-value input {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 7px;
+  height: 20px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  text-align: center;
+}
 .modal {
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -220,7 +334,9 @@ input {
   padding: 20px;
   border: 1px solid #888;
   width: 65%;
-  max-height: 500px;
+  max-height: 600px;
+  height: 65%;
+  min-height: 500px;
   overflow-y: scroll;
 }
 

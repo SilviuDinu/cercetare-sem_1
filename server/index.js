@@ -52,18 +52,71 @@ app.use(express.static('./public'));
 
 
 function buildJson() {
-    for (var i = 0; i < 3000; i++) {
+    for (var i = 0; i < 2000; i++) {
+        var age = Math.floor((Math.random() * (70 - 18)) + 18);
         console.log(i)
-        patients.insert({ id: i, name: goodArray[i], cough: getRandomVal(), fever: getRandomVal(), sore_throat: getRandomVal(), shortness_of_breath: getRandomVal(), lack_of_smell: getRandomVal(), lack_of_tase: getRandomVal(), runny_nose: getRandomVal(), nausea: getRandomVal(), diziness: getRandomVal() });
+        patients.insert({
+            id: i,
+            name: goodArray[i],
+            age: age,
+            cough: getRandomVal('chronic', age),
+            fever: getRandomVal(null, age),
+            sore_throat: getRandomVal(null, age),
+            shortness_of_breath: getRandomVal('chronic', age),
+            tight_chest: getRandomVal(null, age),
+            lack_of_smell: getRandomVal(null, age),
+            lack_of_tase: getRandomVal(null, age),
+            runny_nose: getRandomVal(null, age),
+            nausea: getRandomVal(null, age),
+            diziness: getRandomVal(null, age),
+            muscle_ache: getRandomVal(null, age),
+            headache: getRandomVal(null, age),
+            fatigue: getRandomVal('chronic', age),
+            vomiting: getRandomVal(null, age),
+            diarrhea: getRandomVal(null, age),
+            stomach_ache: getRandomVal(null, age),
+            skin_rash: getRandomVal(null, age),
+            sneezing: getRandomVal(null, age),
+            swelling: getRandomVal(null, age),
+            joint_pain: getRandomVal('chronic', age),
+            joint_swelling: getRandomVal('chronic', age),
+            reduced_mobility: getRandomVal('chronic', age),
+            hunger: getRandomVal('chronic', age),
+            thirst: getRandomVal('chronic', age),
+            weight_loss: getRandomVal('chronic', age),
+            blurred_vision: getRandomVal('chronic', age),
+            frequent_urinating: getRandomVal('chronic', age),
+            chest_pain: getRandomVal('chronic', age),
+        });
     }
     return true;
 }
 
-function getRandomVal() {
-    return Math.random() >= 0.5 ? 1 : 0;
+function getRandomVal(chronic, age) {
+    if (chronic) {
+        if (age < 30) return Math.random() >= 0.85 ? 1 : 0;
+        else if (age < 40) return Math.random() >= 0.75 ? 1 : 0;
+        else if (age < 50) return Math.random() >= 0.65 ? 1 : 0;
+        else if (age < 60) return Math.random() >= 0.5 ? 1 : 0;
+        else if (age < 70) return Math.random() >= 0.37 ? 1 : 0;
+    }
+    else return Math.random() >= 0.5 ? 1 : 0;
 }
 
+
 app.get('/v1/patients/records', async function (req, res, next) {
+    try {
+        const added = await patients.find({});
+        res.json({
+            data: added
+        });
+    }
+    catch (error) {
+        next(error);
+    };
+});
+
+app.get('/v1/patients/records/statistics', async function (req, res, next) {
     try {
         const added = await patients.find({});
         res.json({
@@ -100,9 +153,23 @@ app.patch('/v1/patients/records/update/:id', async function (req, res, next) {
 
 app.delete('/v1/patients/records/delete', async function (req, res, next) {
     try {
+
         const added = await patients.drop();
         res.json({
             data: added
+        });
+    }
+    catch (error) {
+        next(error)
+    };
+});
+
+app.delete('/v1/patients/records/delete/:id', async function (req, res, next) {
+    const { id: id } = req.params;
+    try {
+        const deleted = await patients.remove({ id: parseInt(id) });
+        res.json({
+            data: deleted.deletedCount
         });
     }
     catch (error) {

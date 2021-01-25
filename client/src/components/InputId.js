@@ -6,7 +6,7 @@ export default function InputId(props) {
     }
     return (
         <form onSubmit={event => props.onSubmit(event, props.id)}>
-            <input type="text" value={props.id} onChange={props.onChange} onKeyDown={validateInput} placeholder="Insert ID..." />
+            <input type="text" value={props.id} onChange={props.onChange} onKeyDown={validateInput} placeholder="Insert ID..." className="search-records" />
             <button type="submit" className="search">{props.id ? 'Search by ID' : 'Search all records'}</button>
         </form>
     );
